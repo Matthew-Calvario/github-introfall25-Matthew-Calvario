@@ -92,9 +92,9 @@ summary(temp)
 # Filter to IYR >= 1 (2001 and later, since IYR=0 means 2000)
 library(ggplot2)
 
-plotdata <- subset(totacts, IYR >= 1)
+recent <- subset(totacts, IYR >= 1 & IYR <= 24)
 
-ggplot(plotdata, aes(x = factor(IYR), y = EQPDMG)) +
+ggplot(recent, aes(x = factor(IYR), y = EQPDMG)) +
   geom_boxplot() +
   scale_y_log10() +
   labs(title = "Equipment Damage by Year (2001+)",
@@ -104,7 +104,7 @@ ggplot(plotdata, aes(x = factor(IYR), y = EQPDMG)) +
 
 # 14.
 
-ggplot(plotdata, aes(x = factor(IYR), y = TOTKLD)) +
+ggplot(recent, aes(x = factor(IYR), y = TOTKLD)) +
   geom_boxplot() +
   scale_y_log10() +
   labs(title = "Total Killed by Year (2001+)",
@@ -116,7 +116,7 @@ ggplot(plotdata, aes(x = factor(IYR), y = TOTKLD)) +
 # 15.
 
 
-ggplot(plotdata, aes(x = factor(IYR), y = TRKDMG)) +
+ggplot(recent, aes(x = factor(IYR), y = TRKDMG)) +
   geom_boxplot() +
   scale_y_log10() +
   labs(title = "Track Damage by Year (2001+)",
@@ -127,8 +127,9 @@ ggplot(plotdata, aes(x = factor(IYR), y = TRKDMG)) +
 
 # 16.
 
+# select years 2001-2024 from totacts
 
-ggplot(plotdata, aes(x = factor(IYR), y = TOTINJ)) +
+ggplot(recent, aes(x = factor(IYR), y = TOTINJ)) +
   geom_boxplot() +   # <-- this makes it a boxplot
   labs(title = "Total Injured by Year(2001+)",
        x = "IYR",
@@ -137,7 +138,7 @@ ggplot(plotdata, aes(x = factor(IYR), y = TOTINJ)) +
 
 # 17.
 
-ggplot(plotdata, aes(x = factor(IYR), y = CARSDMG)) +
+ggplot(recent, aes(x = factor(IYR), y = CARSDMG)) +
   geom_boxplot() +
   scale_y_log10() +
   labs(title = "Cars Damaged (2001+)",
@@ -168,8 +169,6 @@ par(mfrow = c(1, 3))
 
 # 20.
 
-recent <- subset(totacts, IYR >= 1)
-
 n_breaks <- nclass.Sturges(recent$TEMP)
 
 ggplot(recent, aes(x = TEMP)) +
@@ -182,8 +181,6 @@ ggplot(recent, aes(x = TEMP)) +
 
 # 21.
 
-# Isolate years between 2001-2024; so no numbers between 25-99
-recent <- subset(totacts, IYR >= 1 & IYR <= 24)
 # All questions in this part refer to a scatter plot matrix created with the pairs.panels function from the psych library for the variables "TRKDMG", "EQPDMG", "ACCDMG","TOTINJ", and "TOTKLD" using data for all the accidents from 2001 to the present.
 
 psych::pairs.panels(recent[, c("TRKDMG", "EQPDMG", "ACCDMG", "TOTINJ", "TOTKLD")])
